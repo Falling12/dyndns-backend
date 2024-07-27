@@ -39,7 +39,7 @@ func (r *AuthRouter) handleMe(c *fiber.Ctx) error {
 func (r *AuthRouter) handleAddUser(c *fiber.Ctx) error {
 	user, err := db.DB.User.CreateOne(
 		db.User.Name.Set("admin"),
-		db.User.Email.Set("senkcsani@gmail.com"),
+		db.User.Email.Set(""),
 		db.User.Password.Set("admin"),
 	).Exec(db.Ctx)
 
