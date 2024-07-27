@@ -1,0 +1,34 @@
+datasource db {
+    // could be postgresql or mysql
+    provider = "sqlite"
+    url      = "file:main.db"
+}
+
+generator db {
+    provider = "go run github.com/steebchen/prisma-client-go"
+}
+
+model User {
+    id       String @id @default(cuid())
+    name     String
+    email    String
+    password String
+}
+
+model Cloudflare {
+    id      String   @id @default(cuid())
+    email   String
+    apiKey  String
+    zoneId  String
+    records Record[]
+}
+
+model Record {
+    id           String     @id @default(cuid())
+    name         String
+    type         String
+    ip           String
+    proxied      Boolean
+    cloudflare   Cloudflare @relation(fields: [cloudflareId], references: [id])
+    cloudflareId String
+}
