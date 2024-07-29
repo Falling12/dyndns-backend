@@ -16,19 +16,27 @@ model User {
 }
 
 model Cloudflare {
-    id      String   @id @default(cuid())
-    email   String
-    apiKey  String
-    zoneId  String
-    records Record[]
+    id     String @id @default(cuid())
+    email  String
+    apiKey String
+    zones  Zone[]
+}
+
+model Zone {
+    id           String     @id @default(cuid())
+    name         String
+    cloudflare   Cloudflare @relation(fields: [cloudflareId], references: [id])
+    cloudflareId String
+    records      Record[]
 }
 
 model Record {
-    id           String     @id @default(cuid())
-    name         String
-    type         String
-    ip           String
-    proxied      Boolean
-    cloudflare   Cloudflare @relation(fields: [cloudflareId], references: [id])
-    cloudflareId String
+    id      String  @id @default(cuid())
+    name    String
+    type    String
+    content String
+    ttl     Int
+    proxied Boolean
+    zone    Zone    @relation(fields: [zoneId], references: [id])
+    zoneId  String
 }
